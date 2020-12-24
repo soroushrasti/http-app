@@ -14,17 +14,15 @@ class App extends Component {
     this.setState({posts})
   }
 
-  handleAdd = () => {
-    console.log("Add");
-  };
    handleAdd= async ()=>{
      const obj={title:'a', body:'b'}
      const {data:posts}= await axios.post('https://jsonplaceholder.typicode.com/posts',obj)
      const posts=[posts,...this.state.posts]
      this.setState({posts})
    }
-  handleUpdate = post => {
-    console.log("Update", post);
+  handleUpdate = async post => {
+     post.title='UPDATED'
+     const {data}= await axios.put('https://jsonplaceholder.typicode.com/posts/'+ post.id,post)
   };
 
   handleDelete = post => {
