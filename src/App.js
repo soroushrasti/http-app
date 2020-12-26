@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
-import http from './services/httpservice'
-
+import http from './services/httpService'
+import config from './config.json'
+import {ToastContainer} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 class App extends Component {
   state = {
@@ -9,20 +11,20 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    const promise= http.get('https://jsonplaceholder.typicode.com/posts')
+    const promise= http.get(config.apiEndPoint)
     const {data:posts}=await promise;
     this.setState({posts})
   }
 
    handleAdd= async ()=>{
      const obj={title:'a', body:'b'}
-     const {data:posts}= await http.post('https://jsonplaceholder.typicode.com/posts',obj)
+     const {data:posts}= await http.post(config.apiEndPoint,obj)
      const post=[posts,...this.state.posts]
      this.setState({post})
    }
   handleUpdate = async post => {
      post.title='UPDATED'
-     const {data}= await http.put('https://jsonplaceholder.typicode.com/posts'+'/'+ post.id,post)
+     const {data}= await http.put(config.apiEndPoint+'/'+ post.id,post)
   };
 
   handleDelete = async post => {
@@ -31,7 +33,7 @@ class App extends Component {
     const posts=this.state.posts.filter(p=>p.id !== post.id)
     this.setState({posts})
     try{
-      await http.delete('https://jsonplaceholder.typicode.com/posts'+'/'+ post.id)
+      await http.delete(config.apiEndPoint+'/'+ post.id)
     }
     catch(ex){
          alert('Something failed while deleting a post')
@@ -44,6 +46,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ToastContainer/>
         <button className="btn btn-primary" onClick={this.handleAdd}>
           Add
         </button>
