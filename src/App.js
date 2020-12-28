@@ -37,8 +37,6 @@ class App extends Component {
     }
     catch(ex){
          alert('Something failed while deleting a post')
-
-
       this.setState({posts:originalPost})
     }
   };
